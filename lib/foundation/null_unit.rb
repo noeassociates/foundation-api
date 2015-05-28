@@ -1,6 +1,6 @@
 class Foundation::NullUnit
 
-  def all
+  def self.all
     []
   end
 
