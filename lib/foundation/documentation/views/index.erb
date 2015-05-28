@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Foundation API</title>
+
+    <style media="screen">
+      body {
+        font-family: monospace;
+        width: 40em;
+        margin: 40px auto;
+        font-size: 12pt;
+      }
+
+      .route {
+        position: relative;
+        margin-bottom: 2.8em;
+      }
+
+      .call {
+        border-bottom: 1px solid black;
+        margin-bottom: 1.4em;
+      }
+
+      .call div {
+        display: inline-block;
+      }
+
+      .version {
+        position: absolute;
+        top: 0;
+        right: 100%;
+        margin-right: 15px;
+        background-color: black;
+        color: white;
+        padding: 0 2px;
+      }
+
+      .description {
+        margin-bottom: 1.4em;
+      }
+
+      .params {
+        position: relative;
+        padding-top: ;
+        background-color: lightgrey;
+        padding: 2.8em 10px 4px;
+      }
+
+      .params::before {
+        content: 'params';
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 4px 10px;
+        background-color: black;
+        color: white;
+      }
+
+      .param {
+        margin-bottom: 0.7em
+      }
+
+      .param .name {
+        font-weight: bold;
+      }
+
+      .param.required .name::after {
+        content: ' *required';
+        font-weight: normal;
+      }
+
+      .allowed_type::before {
+        content: 'Type: '
+      }
+
+      a {
+        border: none;
+        background-color: lightgrey;
+        padding: 2px 5px;
+        cursor: pointer;
+        margin: 0;
+        text-decoration: none;
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <% @routes.each do |route| %>
+      <div class="route">
+        <div class="call">
+          <div class="method"><%= route.route_method %></div>
+          <div class="path"><%= formatted_path route %></div>
+        </div>
+        <div class="version"><%= route.route_version %></div>
+        <div class="description">
+          <%= route.route_description %>
+        </div>
+
+        <% if route.route_params.any? %>
+          <div class="params">
+            <% route.route_params.each do |name, options| %>
+              <div class="param <%= "required" if options[:required] %>">
+                <div class="name"><%= name %></div>
+                <% if options[:type] %>
+                  <div class="allowed_type">
+                    <%= param_type options[:type] %>
+                  </div>
+                <% end %>
+                <div class="description">
+                  <%= options[:desc] %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+
+    <% end %>
+
+    <a href="/api/demo" style="position: absolute; top: 10px; right: 10px;">demo</a>
+
+  </body>
+</html>

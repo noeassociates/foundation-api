@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Foundation API Demo</title>
+
+    <style media="screen">
+      body {
+        font-family: monospace;
+        width: 40em;
+        margin: 40px auto;
+        font-size: 12pt;
+      }
+
+      form,
+      pre,
+      input,
+      a,
+      textarea {
+        color: black;
+        font-family: monospace;
+        font-size: 12pt;
+      }
+
+      input, a {
+        border: none;
+        background-color: lightgrey;
+        padding: 2px 5px;
+        cursor: pointer;
+        margin: 0;
+        text-decoration: none;
+      }
+
+      textarea {
+        width: 100%;
+        resize: vertical;
+        height: 13em;
+      }
+
+      form {
+        margin-bottom: 1em;
+      }
+
+      .get-endpoints a {
+        margin-bottom: 2em;
+        display: inline-block;
+      }
+
+      .response {
+        display: none;
+        margin-top: 3em;
+        border: 1px solid lightgrey;
+        padding: 5px
+      }
+
+    </style>
+
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript">
+      var writeResponse = function(data, status) {
+        $('.response').show().text("Response (" + status + "):\n" + JSON.stringify(data, null, 2));
+      };
+
+      var writeSuccess = function(data, _, xhr) {
+        writeResponse(data, xhr['status'])
+      };
+
+      var writeError = function(data) {
+        writeResponse(data['responseJSON'], data['status']);
+      };
+
+      $(function() {
+        var $form = $('.api-test-form');
+
+        $form.on('submit', function(e) {
+          e.preventDefault();
+
+          var json = JSON.parse($form.find('.json').val());
+          var jqxhr = $.post($form.attr('action'), json);
+
+          jqxhr.done(writeSuccess);
+          jqxhr.error(writeError);
+        });
+
+        $('a[data-endpoint]').on('click', function(e) {
+          e.preventDefault();
+
+          var jqxhr = $.getJSON($(this).data('endpoint'));
+
+          jqxhr.done(writeSuccess);
+          jqxhr.error(writeError);
+        });
+      });
+    </script>
+
+  </head>
+  <body>
+    <form class="api-test-form" action="/api/v1/interest" method="post">
+      <textarea name="json" class="json" rows="8" cols="40"><%= JSON.pretty_generate(@json).strip %></textarea>
+      <input type="submit" name="submit" value="POST /api/v1/interest">
+    </form>
+
+    <div class="get-endpoints">
+      <a href="#" data-endpoint="/api/v1/units">GET /api/v1/units</a>
+    </div>
+
+    <pre class="response"></pre>
+
+    <a href="/api/docs" style="position: absolute; top: 10px; right: 10px;">docs</a>
+
+  </body>
+</html>
