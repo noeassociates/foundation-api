@@ -2,6 +2,9 @@ module Foundation
 
   require 'foundation/null_unit'
   require 'foundation/builders'
+  require 'foundation/api'
+
+  autoload :Documentation, 'foundation/documentation'
 
   @@unit_class ||= 'Foundation::NullUnit'
   @@builders   ||= []

@@ -1,3 +1,7 @@
+require 'sinatra'
+require 'tilt/erb'
+require 'foundation/api'
+
 module Foundation
   class Documentation < ::Sinatra::Base
 
