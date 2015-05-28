@@ -2,6 +2,12 @@
 
 `Foundation::API` is the interface for external clients to express interest in "available units". It's meant to be a reusable interface for residential development websites.
 
+# Installation
+
+```ruby
+gem 'foundation-api', git: 'git@github.com:noeassociates/foundation-api.git'
+```
+
 # Usage
 
 If using Rails, the `Foundation::API` endpoints can be mounted in your routes:
