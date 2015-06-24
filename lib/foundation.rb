@@ -9,6 +9,7 @@ module Foundation
   autoload :Documentation, 'foundation/documentation'
 
   mattr_accessor(:builders) { [] }
+  mattr_accessor(:updaters) { [] }
 
   @@unit_class ||= 'Foundation::NullUnit'
 

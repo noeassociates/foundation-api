@@ -4,10 +4,12 @@ require 'email_regex'
 
 require 'foundation/entities/unit'
 require 'foundation/runner'
+require 'foundation/interest_params'
 
 module Foundation
   class API < Grape::API
-    UNIT_IDS = -> { Foundation.unit_class.all.collect(&:id) }
+
+    extend Foundation::InterestParams
 
     use Rack::Cors do
       allow do
@@ -30,25 +32,25 @@ module Foundation
       present Foundation.unit_class.all, with: Foundation::Entities::Unit
     end
 
-    params do
-      requires :first_name, type: String
-      requires :last_name,  type: String
-      requires :unit_ids,   type: Array[Integer],
-                            values: UNIT_IDS,
-                            desc: 'Must only include ids from units returned by the Unit endpoint.'
-      optional :email,      type: String, regexp: EmailRegex::EMAIL_ADDRESS_REGEX,
-                            desc: 'Must be a valid, non-blank email address.'
-      optional :message,    type: String,
-                            desc: 'A personal message to be displayed on the site or emailed to the recipient.'
-      optional :data,       type: Hash
-    end
     resource 'interest' do
       desc 'Records interest in a set of units. Returns a JSON object which includes the accepted_params on successful request.'
+      interest_params!
       post do
         runner = Foundation::Runner.new Foundation.builders
         runner.before << Foundation::Builders::AcceptedParamsBuilder
         runner.after  << Foundation::Builders::SlugBuilder
         runner.after  << Foundation::Builders::UrlBuilder
+        runner.run request, params
+      end
+
+      desc 'Update previously posted interest. Returns a JSON object which includes the accepted_params on successful request.'
+      params do
+        requires :slug, type: String
+      end
+      interest_params! required: false
+      patch do
+        runner = Foundation::Runner.new Foundation.updaters
+        runner.before << Foundation::Builders::AcceptedParamsBuilder
         runner.run request, params
       end
     end
