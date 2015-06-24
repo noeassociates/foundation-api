@@ -1,3 +1,5 @@
+require 'active_support/core_ext/module'
+
 module Foundation
 
   require 'foundation/null_unit'
@@ -6,16 +8,9 @@ module Foundation
 
   autoload :Documentation, 'foundation/documentation'
 
+  mattr_accessor(:builders) { [] }
+
   @@unit_class ||= 'Foundation::NullUnit'
-  @@builders   ||= []
-
-  def self.builders
-    @@builders
-  end
-
-  def self.builders= value
-    @@builders = value
-  end
 
   def self.unit_class
     @@unit_class.constantize

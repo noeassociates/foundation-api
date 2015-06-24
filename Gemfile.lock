@@ -2,6 +2,7 @@ PATH
   remote: .
   specs:
     foundation-api (1.0.0)
+      activesupport
       email_regex
       grape
       grape-entity
