@@ -3,6 +3,7 @@ require 'rack/cors'
 require 'email_regex'
 
 require 'foundation/entities/unit'
+require 'foundation/runner'
 
 module Foundation
   class API < Grape::API
@@ -29,7 +30,6 @@ module Foundation
       present Foundation.unit_class.all, with: Foundation::Entities::Unit
     end
 
-    desc 'Records interest in a set of units. Returns a JSON object which includes the accepted_params on successful request.'
     params do
       requires :first_name, type: String
       requires :last_name,  type: String
@@ -42,16 +42,15 @@ module Foundation
                             desc: 'A personal message to be displayed on the site or emailed to the recipient.'
       optional :data,       type: Hash
     end
-    post 'interest' do
-      Foundation.run_builders(request,
-                              params,
-                              before: [
-                                Foundation::Builders::AcceptedParamsBuilder
-                              ],
-                              after: [
-                                Foundation::Builders::SlugBuilder,
-                                Foundation::Builders::UrlBuilder
-                              ])
+    resource 'interest' do
+      desc 'Records interest in a set of units. Returns a JSON object which includes the accepted_params on successful request.'
+      post do
+        runner = Foundation::Runner.new Foundation.builders
+        runner.before << Foundation::Builders::AcceptedParamsBuilder
+        runner.after  << Foundation::Builders::SlugBuilder
+        runner.after  << Foundation::Builders::UrlBuilder
+        runner.run request, params
+      end
     end
   end
 end

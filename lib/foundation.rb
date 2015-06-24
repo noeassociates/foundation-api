@@ -28,14 +28,4 @@ module Foundation
   def self.config
     yield self if block_given?
   end
-
-  def self.run_builders request, params, *args
-    builders_with(*args).each_with_object(Hashie::Mash.new) do |b, env|
-      b.new(request).build(params, env)
-    end
-  end
-
-  def self.builders_with before: [], after: []
-    after + builders + before
-  end
 end
