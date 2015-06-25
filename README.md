@@ -8,6 +8,10 @@
 gem 'foundation-api', git: 'git@github.com:noeassociates/foundation-api.git'
 ```
 
+# Development Server
+
+The `foundation-api` repository includes a development Rack application that can be used for testing API clients. From inside the repository, run `bundle` to install the dependencies, and then `bundle exec rackup` to start the development server at `http://localhost:9292`.
+
 # Usage
 
 If using Rails, the `Foundation::API` endpoints can be mounted in your routes:
