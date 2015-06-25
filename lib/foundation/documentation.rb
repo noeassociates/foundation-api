@@ -20,6 +20,7 @@ module Foundation
         last_name: "Doe",
         email: "j.doe@pp.com",
         message: "Hi Joe! Thanks for stopping by today.",
+        seller: "Melissa",
         unit_ids: [1]
       }
 
