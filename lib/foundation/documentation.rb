@@ -20,8 +20,12 @@ module Foundation
         last_name: "Doe",
         email: "j.doe@pp.com",
         message: "Hi Joe! Thanks for stopping by today.",
-        seller: "Melissa",
-        unit_ids: [1]
+        sales_agent: "Melissa",
+        unit_ids: [1],
+        data: {
+          family: 'single',
+          age: '40'
+        }
       }
 
       erb :demo
