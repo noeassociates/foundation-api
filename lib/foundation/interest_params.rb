@@ -10,6 +10,8 @@ module Foundation::InterestParams
       send rt, :unit_ids,   type: Array[Integer],
                             values: UNIT_IDS,
                             desc: 'Must only include ids from units returned by the Unit endpoint.'
+      optional :seller,     type: String, regexp: EmailRegex::EMAIL_ADDRESS_REGEX,
+                            desc: 'Name of the salesperson.'
       optional :email,      type: String, regexp: EmailRegex::EMAIL_ADDRESS_REGEX,
                             desc: 'Must be a valid, non-blank email address.'
       optional :message,    type: String,
