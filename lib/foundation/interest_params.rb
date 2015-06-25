@@ -7,7 +7,7 @@ module Foundation::InterestParams
     params do
       send rt, :first_name, type: String
       send rt, :last_name,  type: String
-      send rt, :unit_ids,   type: Array[Integer],
+      optional :unit_ids,   type: Array[Integer],
                             values: UNIT_IDS,
                             desc: 'Must only include ids from units returned by the Unit endpoint.'
       optional :seller,     type: String, regexp: EmailRegex::EMAIL_ADDRESS_REGEX,

@@ -8,7 +8,6 @@ require 'foundation/interest_params'
 
 module Foundation
   class API < Grape::API
-
     extend Foundation::InterestParams
 
     use Rack::Cors do

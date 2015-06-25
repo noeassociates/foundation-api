@@ -60,6 +60,11 @@ class Foundation::APITest < Minitest::Test
     assert last_response.created?
   end
 
+  def test_accepts_post_with_empty_unit_ids_to_interest_endpoint
+    post "/api/v1/interest", valid_post_params.merge("unit_ids" => [])
+    assert last_response.created?, -> { JSON.parse(last_response.body)['error'] }
+  end
+
   def test_accepts_reasonable_patch_to_interest_endpoint
     post "/api/v1/interest", valid_patch_params
     assert last_response.created?
