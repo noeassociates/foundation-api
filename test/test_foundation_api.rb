@@ -129,6 +129,7 @@ class Foundation::APITest < Minitest::Test
     {
       "first_name" => 'foo',
       "last_name" => 'bar',
+      "email" => 'foo@bar.com',
       "unit_ids" => [1]
     }
   end
