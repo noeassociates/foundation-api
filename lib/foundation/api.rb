@@ -36,9 +36,9 @@ module Foundation
       interest_params!
       post do
         runner = Foundation::Runner.new Foundation.builders
+        runner.before << Foundation::Builders::UrlBuilder
         runner.before << Foundation::Builders::AcceptedParamsBuilder
         runner.after  << Foundation::Builders::SlugBuilder
-        runner.after  << Foundation::Builders::UrlBuilder
         runner.run request, params
       end
 
