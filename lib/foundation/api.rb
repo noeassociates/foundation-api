@@ -22,6 +22,7 @@ module Foundation
     prefix :api
 
     before do
+      header 'Access-Control-Allow-Origin', '*'
       params.select! {|k, _| route.route_params.keys.include? k}
     end
 
