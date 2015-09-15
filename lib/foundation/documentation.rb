@@ -15,7 +15,7 @@ module Foundation
     end
 
     get '/api/demo' do
-      @json = {
+      @post = {
         first_name: "Joe",
         last_name: "Doe",
         email: "j.doe@pp.com",
@@ -23,8 +23,15 @@ module Foundation
         sales_agent: "Melissa",
         unit_ids: [1],
         data: {
-          family: 'single',
+          family: 'married',
           age: '40'
+        }
+      }
+
+      @patch = {
+        slug: 'joe-doe',
+        data: {
+          family: 'single'
         }
       }
 

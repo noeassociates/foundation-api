@@ -4,9 +4,13 @@
     <title>Foundation API Demo</title>
 
     <style media="screen">
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         font-family: monospace;
-        width: 40em;
+        width: 60em;
         margin: 40px auto;
         font-size: 12pt;
       }
@@ -34,22 +38,43 @@
         width: 100%;
         resize: vertical;
         height: 18em;
+        border-color: lightgrey;
       }
 
       form {
-        margin-bottom: 1em;
+        margin-bottom: 2em;
+      }
+
+      .request,
+      .response {
+        width: 46%;
+        margin: 0 2%;
+        float: left;
+      }
+
+      .patch-form textarea {
+        height: 9em;
+      }
+
+      .get-endpoints {
+        margin-bottom: 2em;
       }
 
       .get-endpoints a {
-        margin-bottom: 2em;
         display: inline-block;
       }
 
       .response {
         display: none;
-        margin-top: 3em;
-        border: 1px solid lightgrey;
-        padding: 5px
+        border: 1px solid blue;
+        color: blue;
+        padding: 5px;
+        overflow: scroll;
+      }
+
+      .response.error {
+        border-color: red;
+        color: red;
       }
 
     </style>
@@ -57,7 +82,9 @@
     <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script type="text/javascript">
       var writeResponse = function(data, status) {
-        $('.response').show().text("Response (" + status + "):\n" + JSON.stringify(data, null, 2));
+        $('.response').show()
+              .text("Response (" + status + "):\n" + JSON.stringify(data, null, 2))
+              .toggleClass('error', status.toString()[0] !== '2');
       };
 
       var writeSuccess = function(data, _, xhr) {
@@ -69,13 +96,17 @@
       };
 
       $(function() {
-        var $form = $('.api-test-form');
-
-        $form.on('submit', function(e) {
+        $('.api-test-form').on('submit', function(e) {
           e.preventDefault();
 
+          var $form = $(this);
+
           var json = JSON.parse($form.find('.json').val());
-          var jqxhr = $.post($form.attr('action'), json);
+          var jqxhr = $.ajax({
+            method: $form.attr('method'),
+            url: $form.attr('action'),
+            data: json
+          });
 
           jqxhr.done(writeSuccess);
           jqxhr.error(writeError);
@@ -94,13 +125,20 @@
 
   </head>
   <body>
-    <form class="api-test-form" action="/api/v1/interest" method="post">
-      <textarea name="json" class="json" rows="8" cols="40"><%= JSON.pretty_generate(@json).strip %></textarea>
-      <input type="submit" name="submit" value="POST /api/v1/interest">
-    </form>
+    <div class="request">
+      <div class="get-endpoints">
+        <a href="#" data-endpoint="/api/v1/units">GET /api/v1/units</a>
+      </div>
 
-    <div class="get-endpoints">
-      <a href="#" data-endpoint="/api/v1/units">GET /api/v1/units</a>
+      <form class="api-test-form post-form" action="/api/v1/interest" method="post">
+        <textarea name="json" class="json" rows="8" cols="40"><%= JSON.pretty_generate(@post).strip %></textarea>
+        <input type="submit" name="submit" value="POST /api/v1/interest">
+      </form>
+
+      <form class="api-test-form patch-form" action="/api/v1/interest" method="patch">
+        <textarea name="json" class="json" rows="8" cols="40"><%= JSON.pretty_generate(@patch).strip %></textarea>
+        <input type="submit" name="submit" value="PATCH /api/v1/interest">
+      </form>
     </div>
 
     <pre class="response"></pre>
