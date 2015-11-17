@@ -7,14 +7,14 @@ module Foundation
 
     set :root, File.join(File.dirname(__FILE__), 'documentation')
 
-    get '/api/docs' do
+    get '/docs' do
       @api = Foundation::API
       @routes = @api.routes
       @routes.select! {|r| r.route_prefix}
       erb :index
     end
 
-    get '/api/demo' do
+    get '/demo' do
       @post = {
         first_name: "Joe",
         last_name: "Doe",

@@ -18,8 +18,8 @@ If using Rails, the `Foundation::API` endpoints can be mounted in your routes:
 
 ```ruby
 Rails.application.routes.draw do
-  mount Foundation::API => '/'
-  mount Foundation::Documentation => '/'
+  mount Foundation::API => '/api'
+  mount Foundation::Documentation => '/api'
 end
 ```
 

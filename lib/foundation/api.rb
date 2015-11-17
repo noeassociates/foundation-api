@@ -19,11 +19,12 @@ module Foundation
 
     version 'v1', using: :path
     format :json
-    prefix :api
 
     before do
       header 'Access-Control-Allow-Origin', '*'
-      params.select! {|k, _| route.route_params.keys.include? k}
+      params.select! do |k, _|
+        route.route_params.keys.include? k
+      end
     end
 
     desc 'Returns unit names and ids in an array of JSON objects.',

@@ -12,7 +12,7 @@ class Foundation::DocumentationTest < Minitest::Test
   end
 
   def test_get_index
-    get "/api/docs"
+    get "/docs"
     assert last_response.ok?
   end
 

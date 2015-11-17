@@ -40,48 +40,48 @@ class Foundation::APITest < Minitest::Test
   end
 
   def test_get_api_units_returns_an_array
-    get "/api/v1/units"
+    get "/v1/units"
     assert last_response.ok?
     assert_kind_of Array, JSON.parse(last_response.body)
   end
 
   def test_returns_unit_json
-    get "/api/v1/units"
+    get "/v1/units"
     assert_equal [{ "name" => "test", "id" => 1 }], JSON.parse(last_response.body)
   end
 
   def test_refuses_empty_post_to_interest_endpoint
-    post "/api/v1/interest"
+    post "/v1/interest"
     refute last_response.created?
   end
 
   def test_accepts_reasonable_post_to_interest_endpoint
-    post "/api/v1/interest", valid_post_params
+    post "/v1/interest", valid_post_params
     assert last_response.created?
   end
 
   def test_accepts_post_with_empty_unit_ids_to_interest_endpoint
-    post "/api/v1/interest", valid_post_params.merge("unit_ids" => [])
+    post "/v1/interest", valid_post_params.merge("unit_ids" => [])
     assert last_response.created?, -> { JSON.parse(last_response.body)['error'] }
   end
 
   def test_accepts_reasonable_patch_to_interest_endpoint
-    post "/api/v1/interest", valid_patch_params
+    post "/v1/interest", valid_patch_params
     assert last_response.created?
   end
 
   def test_returns_accepted_params_in_response
-    post "/api/v1/interest", valid_post_params
+    post "/v1/interest", valid_post_params
     assert_equal valid_post_params, JSON.parse(last_response.body)["accepted_params"]
   end
 
   def test_returns_only_accepted_params_in_response
-    post "/api/v1/interest", valid_post_params.merge("foo" => "bar")
+    post "/v1/interest", valid_post_params.merge("foo" => "bar")
     assert_equal valid_post_params, JSON.parse(last_response.body)["accepted_params"]
   end
 
   def test_returns_slug_in_repsonse
-    post "/api/v1/interest", valid_post_params.merge("first_name" => "Bar Qaaz", "last_name" => "Foo")
+    post "/v1/interest", valid_post_params.merge("first_name" => "Bar Qaaz", "last_name" => "Foo")
     assert_equal 'bar-qaaz-foo', JSON.parse(last_response.body)["slug"]
   end
 
@@ -92,7 +92,7 @@ class Foundation::APITest < Minitest::Test
 
     Foundation.builders << builder
 
-    post "/api/v1/interest", valid_post_params
+    post "/v1/interest", valid_post_params
 
     builder.verify
   end
@@ -100,26 +100,26 @@ class Foundation::APITest < Minitest::Test
   def test_runs_with_default_builder
     Foundation.builders << Foundation::Builder
 
-    post "/api/v1/interest", valid_post_params
+    post "/v1/interest", valid_post_params
     assert last_response.created?
   end
 
   def test_refuses_post_with_invalid_ids
     invalid_post_params = valid_post_params.merge unit_ids: 9999
-    post "/api/v1/interest", invalid_post_params
+    post "/v1/interest", invalid_post_params
     refute last_response.created?
   end
 
   def test_refuses_post_with_invalid_email
     invalid_post_params = valid_post_params.merge email: 'fooooo.sd'
-    post "/api/v1/interest", invalid_post_params
+    post "/v1/interest", invalid_post_params
     refute last_response.created?
   end
 
   def test_refuses_patch_without_slug
     invalid_patch_params = valid_patch_params
     invalid_patch_params.delete 'slug'
-    patch "/api/v1/interest", invalid_patch_params
+    patch "/v1/interest", invalid_patch_params
     refute last_response.created?
   end
 
