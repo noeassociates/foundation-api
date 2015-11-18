@@ -10,7 +10,7 @@ module Foundation
     get '/docs' do
       @api = Foundation::API
       @routes = @api.routes
-      @routes.select! {|r| r.route_prefix}
+      @routes.select!(&:route_version)
       erb :index
     end
 
