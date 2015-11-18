@@ -123,6 +123,20 @@ class Foundation::APITest < Minitest::Test
     refute last_response.created?
   end
 
+  def test_strips_subdomain_from_request_url
+    with_host "api.myapp.com" do
+      post "/v1/interest", valid_post_params
+      assert_equal 'http://foo-bar.myapp.com', JSON.parse(last_response.body)["url"]
+    end
+  end
+
+  def test_reserves_domain_in_request_url
+    with_host "myapp.com" do
+      post "/v1/interest", valid_post_params
+      assert_equal 'http://foo-bar.myapp.com', JSON.parse(last_response.body)["url"]
+    end
+  end
+
   protected
 
   def valid_post_params
@@ -136,5 +150,9 @@ class Foundation::APITest < Minitest::Test
 
   def valid_patch_params
     valid_post_params.merge "slug" => 'some_sluggy_slug'
+  end
+
+  def with_host(host, &block)
+    stub(:build_rack_mock_session, Rack::MockSession.new(app, host), &block)
   end
 end
