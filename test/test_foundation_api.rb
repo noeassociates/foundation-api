@@ -137,6 +137,11 @@ class Foundation::APITest < Minitest::Test
     end
   end
 
+  def test_uses_default_name_if_names_are_blank
+    post "/v1/interest", valid_post_params.merge('first_name': '', 'last_name': '')
+    assert_equal 'visitor', JSON.parse(last_response.body)["slug"]
+  end
+
   protected
 
   def valid_post_params
