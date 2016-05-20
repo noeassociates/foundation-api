@@ -23,10 +23,11 @@ Gem::Specification.new do |s|
   s.add_dependency 'sinatra'
   s.add_dependency 'email_regex'
   s.add_dependency 'rack-cors'
-  s.add_dependency 'activesupport'
+  s.add_dependency 'activesupport', '~> 4.2'
 
   s.add_development_dependency 'minitest'
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'rack-rewrite'
+  s.add_development_dependency 'rake'
 
 end
