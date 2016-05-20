@@ -7,6 +7,7 @@ module Foundation
   require 'foundation/api'
 
   autoload :Documentation, 'foundation/documentation'
+  autoload :Builder, 'foundation/builder'
 
   mattr_accessor(:builders) { [] }
   mattr_accessor(:updaters) { [] }

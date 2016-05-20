@@ -10,7 +10,7 @@ module Foundation
     get '/docs' do
       @api = Foundation::API
       @routes = @api.routes
-      @routes.select!(&:route_version)
+      @routes.select!(&:version)
       erb :index
     end
 
@@ -47,7 +47,7 @@ module Foundation
       end
 
       def formatted_path route
-        route.route_path.gsub ':version', route.route_version
+        route.path.gsub ':version', route.version
       end
     end
 

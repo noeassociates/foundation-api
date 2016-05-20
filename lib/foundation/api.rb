@@ -24,7 +24,7 @@ module Foundation
     before do
       header 'Access-Control-Allow-Origin', '*'
       params.select! do |k, _|
-        route.route_params.keys.include? k
+        route.params.keys.include? k
       end
     end
 

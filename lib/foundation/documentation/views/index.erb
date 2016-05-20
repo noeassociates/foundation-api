@@ -88,17 +88,17 @@
     <% @routes.each do |route| %>
       <div class="route">
         <div class="call">
-          <div class="method"><%= route.route_method %></div>
+          <div class="method"><%= route.request_method %></div>
           <div class="path"><%= formatted_path route %></div>
         </div>
-        <div class="version"><%= route.route_version %></div>
+        <div class="version"><%= route.version %></div>
         <div class="description">
-          <%= route.route_description %>
+          <%= route.description %>
         </div>
 
-        <% if route.route_params.any? %>
+        <% if route.params.any? %>
           <div class="params">
-            <% route.route_params.each do |name, options| %>
+            <% route.params.each do |name, options| %>
               <div class="param <%= "required" if options[:required] %>">
                 <div class="name"><%= name %></div>
                 <% if options[:type] %>
