@@ -137,6 +137,13 @@ class Foundation::APITest < Minitest::Test
     end
   end
 
+  def test_reserves_domain_in_request_url
+    with_host "www.myapp.com" do
+      post "/v1/interest", valid_post_params
+      assert_equal 'http://foo-bar.myapp.com', JSON.parse(last_response.body)["url"]
+    end
+  end
+
   def test_uses_default_name_if_names_are_blank
     post "/v1/interest", valid_post_params.merge('first_name': '', 'last_name': '')
     assert_equal 'visitor', JSON.parse(last_response.body)["slug"]
